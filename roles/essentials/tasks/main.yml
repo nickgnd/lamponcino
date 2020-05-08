@@ -1,0 +1,6 @@
+---
+- name: manage apt packages
+  import_tasks: packages.yml
+
+- name: manage dotfiles
+  import_tasks: dotfiles.yml

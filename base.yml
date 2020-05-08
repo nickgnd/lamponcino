@@ -1,0 +1,10 @@
+---
+# Base Ansible playbook: Maps configuration of the 'raspberries' group
+# to the roles (services) that you want the group's host(s) to run.
+
+- hosts: raspberries
+  roles:
+    - essentials
+  vars:
+    home: "{{ ansible_env.HOME }}"
+    user: "{{ ansible_env.USER }}"

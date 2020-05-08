@@ -1,0 +1,5 @@
+---
+# Configure system-wide settings.
+os:
+  timezone: Europe/Berlin
+  locale: en_US.UTF-8
