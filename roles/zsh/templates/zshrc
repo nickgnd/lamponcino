@@ -1,0 +1,150 @@
+###############
+# Completions #
+###############
+
+export LSCOLORS='exfxcxdxbxegedabagacad'
+export CLICOLOR=true
+
+# Completions
+autoload -U compinit
+compinit -C
+
+# Arrow key menu for completions
+zstyle ':completion:*' menu select
+
+# Case-insensitive (all),partial-word and then substring completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+###########
+# Aliases #
+###########
+
+# Most of them are taken from the common aliases in ohmyzsh
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/common-aliases
+
+# ls, the common ones I use a lot shortened for rapid fire usage
+alias l='ls -lFh'     #size,show type,human readable
+alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
+alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
+alias ll='ls -l'      #long list
+
+# Highlight matches
+alias grep='grep --color'
+
+# Find a directory with the given name
+alias fd='find . -type d -name'
+
+# Find a file with the given name
+alias ff='find . -type f -name'
+
+# Useful for searching within files
+alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+
+# Request confirmation before attempting to remove/copy/move each file
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# don't expand aliases _before_ completion has finished
+#   like: git comm-[tab]
+setopt COMPLETE_ALIASES
+
+###########
+# History #
+###########
+
+# number of lines kept in history
+export HISTSIZE=10000
+
+# number of lines saved in the history after logout
+export SAVEHIST=10000
+
+# location of history
+export HISTFILE=~/.zsh_history
+
+# whenever the user enters a line with history expansion, don’t execute the line directly;
+# perform history expansion and reload the line into the editing buffer
+setopt HIST_VERIFY
+
+# append zsh session's history to the history file on exit
+# setopt APPEND_HISTORY
+
+# append command to history file once executed
+setopt INC_APPEND_HISTORY
+
+# don't record dupes in history
+setopt HIST_IGNORE_ALL_DUPS
+
+# remove superfluous blanks from each command line being added to the history list. 
+setopt HIST_REDUCE_BLANKS
+
+# imports new command from history file and append your type command to it;
+# it should allow history sharing between sessions
+setopt SHARE_HISTORY
+
+# add timestamps to history
+setopt EXTENDED_HISTORY
+
+#############
+# Bind Keys #
+#############
+
+# better history
+# credits to https://coderwall.com/p/jpj_6q/zsh-better-history-searching-with-arrow-keys
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+# navigate past commands that include the current input with up/down keys
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+
+# backward and forward word with option+left/right
+bindkey '^[^[[D' backward-word
+bindkey '^[^[[C' forward-word
+
+# go to the beginning/end of the line with fn+right/left
+bindkey '^[[5D' beginning-of-line
+bindkey '^[[5C' end-of-line
+
+# delete char with backspaces and delete
+bindkey '^[[3~' delete-char
+
+# char deletion with ctrl-?
+bindkey '^?' backward-delete-char
+
+########
+# Misc #
+########
+
+# don't nice background tasks
+setopt NO_BG_NICE
+
+# don't kill background jobs on shell exit
+setopt NO_HUP
+
+# turn off beeping for ambiguous completions 
+setopt NO_LIST_BEEP
+
+# allow functions to have local options
+setopt LOCAL_OPTIONS
+
+# allow functions to have local traps
+setopt LOCAL_TRAPS
+
+# the prompt string is first subjected to parameter expansion, command substitution and arithmetic expansion 
+setopt PROMPT_SUBST
+
+# try to correct the spelling of commands
+setopt CORRECT
+
+# don't move the cursor at the end of the word when the completion is started
+setopt COMPLETE_IN_WORD
+
+# don't exit on end-of-file
+setopt IGNORE_EOF
+
+# These are just basic recommendations, set these to your liking!
+export EDITOR=vim 

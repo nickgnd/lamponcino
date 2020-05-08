@@ -1,0 +1,21 @@
+---
+- name: install zsh
+  apt:
+    state: present
+    pkg:
+      - zsh
+  become: yes
+  tags: zsh
+
+- name: set zsh as the default shell
+  user:
+    name: "{{ user }}"
+    shell: /bin/zsh
+  become: yes
+  tags: zsh
+
+- name: add .zshrc config
+  copy:
+    src: templates/zshrc
+    dest: ~/.zshrc
+  tags: zsh
