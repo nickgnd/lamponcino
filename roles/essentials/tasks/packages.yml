@@ -25,6 +25,7 @@
       - curl
       - vim
       - htop
+      - git
   become: yes
   tags: packages
 
