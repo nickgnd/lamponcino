@@ -1,0 +1,136 @@
+---
+# This task installs shairport-sync as described in
+# https://github.com/mikebrady/shairport-sync/blob/master/INSTALL.md
+#
+# Here a full list of all the configurable options:
+# https://github.com/fallenbeck/ansible-audiopi/blob/fbdaacceab2e18a242e15c82007fbb8bbd7d9092/playbooks/tasks/shairport-sync.yml
+#
+# And here the default sample file:
+# https://github.com/mikebrady/shairport-sync/blob/master/scripts/shairport-sync.conf
+#
+# Highly inspired by
+# https://github.com/fallenbeck/ansible-audiopi/blob/master/playbooks/tasks/shairport-sync.yml
+
+- name: Stop shairport-sync service (if any)
+  become: yes
+  systemd:
+    name: shairport-sync
+    enabled: no
+    state: stopped
+  ignore_errors: yes
+  tags: shairport-sync
+
+
+- name: Set shairport-sync device name
+  set_fact:
+    shairport_name: "{{ ansible_hostname | title }}"
+    cacheable: yes
+
+- name: Turn off WiFi power management
+  become: yes
+  shell: iwconfig wlan0 power off
+  tags: shairport-sync
+
+- name: Turn off WiFi power management (in /etc/network/devices)
+  become: yes
+  lineinfile:
+    create: yes
+    line: 'wireless-power off'
+    path: '/etc/network/interfaces'
+    state: present
+  tags: shairport-sync
+
+- name: install shairport-sync dependencies
+  apt:
+    state: present
+    pkg:
+      - xmltoman
+      - autoconf
+      - automake
+      - libtool
+      - libpopt-dev
+      - libconfig-dev
+      - libasound2-dev
+      - avahi-daemon
+      - libavahi-client-dev
+      - libssl-dev
+      - libsoxr-dev
+  become: yes
+  tags: shairport-sync
+
+- name: Create /opt/shairport-sync
+  become: yes
+  file:
+    path: /opt/shairport-sync
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags: shairport-sync
+
+- name: Clone shairport-sync repository
+  become: yes
+  git:
+    repo: https://github.com/mikebrady/shairport-sync.git
+    dest: /opt/shairport-sync
+    clone: true
+    update: true
+    force: yes
+  register: repository
+  tags: shairport-sync
+
+- name: Run autoreconf
+  become: yes
+  command: autoreconf -fi
+  args:
+    chdir: /opt/shairport-sync
+  when: repository.changed
+  tags: shairport-sync
+
+- name: Configure shairport-sync
+  become: yes
+  command: ./configure --with-configfiles --sysconfdir=/etc --with-alsa --with-soxr --with-avahi --with-ssl=openssl --with-systemd
+  args:
+    chdir: /opt/shairport-sync
+  when: repository.changed
+  tags: shairport-sync
+
+- name: Build shairport-sync
+  become: yes
+  make:
+    chdir: /opt/shairport-sync
+  when: repository.changed
+  tags: shairport-sync
+
+- name: Install shairport-sync
+  become: yes
+  make:
+    chdir: /opt/shairport-sync
+    target: install
+  when: repository.changed
+  tags: shairport-sync
+
+- name: Bootstrap shairport-sync configuration from the sample file
+  become: yes
+  copy:
+    src: /etc/shairport-sync.conf.sample
+    dest: /etc/shairport-sync.conf
+    force: yes
+    remote_src: yes
+  tags: shairport-sync
+
+- name: Update shairport-sync configuration file
+  become: yes
+  patch:
+    src: shairport-sync.conf.patch
+    dest: /etc/shairport-sync.conf
+  tags: shairport-sync
+
+- name: Enable shairport-sync service
+  become: yes
+  systemd:
+    name: shairport-sync
+    enabled: yes
+    state: started
+    daemon_reload: yes
+  tags: shairport-sync

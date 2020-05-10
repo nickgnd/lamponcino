@@ -1,0 +1,22 @@
+# The file patch is based on this official guide
+# https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/
+# http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
+# https://pimylifeup.com/raspberry-pi-airplay-receiver/
+---
+- name: update boot config
+  patch:
+    src: boot-config.patch
+    dest: /boot/config.txt
+    backup: yes
+  become: yes
+  register: hifiberry_boot_config
+  tags: hifiberry
+
+- name: restart raspberry if boot config have been changed
+  include_role:
+    name: common
+    tasks_from: reboot
+  when: hifiberry_boot_config.changed
+  tags: hifiberry
+
+

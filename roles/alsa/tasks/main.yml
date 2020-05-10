@@ -1,0 +1,24 @@
+# The HiFiBerry DAC+ comes with integrated volume control, let's raise its default value!
+# Note: the "Digital" control is available only after configuring the Hifberry DAC+ card.
+#
+# Based on this guide:
+# https://www.hifiberry.com/docs/archive/mixer-controls-on-the-hifiberry-boards/
+
+---
+- name: install alsa dependencies
+  become: yes
+  apt:
+    state: present
+    pkg:
+      - alsa-utils
+  tags: alsa
+
+- name: Set alsa volume Digital to 90%
+  become: yes
+  command: amixer sset Digital 90%
+  tags: alsa
+
+- name: Store alsa values
+  become: yes
+  command: alsactl store
+  tags: alsa

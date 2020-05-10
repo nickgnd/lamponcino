@@ -1,0 +1,6 @@
+---
+- name: Restarting devices and wait for them
+  become: yes
+  reboot:
+    pre_reboot_delay: 1
+    post_reboot_delay: 1

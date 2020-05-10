@@ -1,0 +1,25 @@
+--- /Users/nicolognudi/Desktop/config-boot	2020-05-09 13:07:14.000000000 +0200
++++ /Users/nicolognudi/Desktop/config-boot-patch	2020-05-10 20:51:15.000000000 +0200
+@@ -54,7 +54,7 @@
+ # Additional overlays and parameters are documented /boot/overlays/README
+ 
+ # Enable audio (loads snd_bcm2835)
+-dtparam=audio=on
++# dtparam=audio=on
+ 
+ [pi4]
+ # Enable DRM VC4 V3D driver on top of the dispmanx display stack
+@@ -63,3 +63,13 @@
+ 
+ [all]
+ #dtoverlay=vc4-fkms-v3d
++
++# Enable mmap support in the bcm2708-i2s driver
++dtoverlay=i2s-mmap
++
++# Enable HiFiBerry module
++dtoverlay=hifiberry-dacplus
++
++# Enable the improved RaspberryPi audio out
++# http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
++audio_pwm_mode=2
