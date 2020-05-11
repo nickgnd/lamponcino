@@ -1,0 +1,16 @@
+---
+- name: Clone asdf repository
+  git:
+    repo: https://github.com/asdf-vm/asdf.git
+    dest: ~/.asdf
+    clone: yes
+    update: yes
+    force: yes
+    version: v0.7.8
+  tags: asdf
+
+- name: Store asdf executable path as variable
+  set_fact:
+    asdf_executable: ~/.asdf/bin/asdf
+    cachable: yes
+  tags: asdf

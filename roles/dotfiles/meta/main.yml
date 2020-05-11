@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: essentials
+  - role: zsh
+  - role: asdf

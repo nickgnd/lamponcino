@@ -6,7 +6,12 @@ export LSCOLORS='exfxcxdxbxegedabagacad'
 export CLICOLOR=true
 
 # Completions
-autoload -U compinit
+
+# append asdf completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+
+# initialise completions with ZSH's compinit
+autoload -Uz compinit
 compinit -C
 
 # Arrow key menu for completions
@@ -148,3 +153,6 @@ setopt IGNORE_EOF
 
 # These are just basic recommendations, set these to your liking!
 export EDITOR=vim 
+
+# Source asdf script
+. $HOME/.asdf/asdf.sh

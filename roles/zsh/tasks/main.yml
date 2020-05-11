@@ -13,9 +13,3 @@
     shell: /bin/zsh
   become: yes
   tags: zsh
-
-- name: add .zshrc config
-  copy:
-    src: templates/zshrc
-    dest: ~/.zshrc
-  tags: zsh

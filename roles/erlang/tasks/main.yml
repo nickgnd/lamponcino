@@ -1,0 +1,32 @@
+---
+- name: Add erlang plugin
+  command: "{{ asdf_executable }} plugin add erlang"
+  args:
+    creates: "{{ home }}/.asdf/plugins/erlang"
+    chdir: "{{ home }}"
+  tags: erlang
+
+- name: Install dependencies
+  apt:
+    state: present
+    pkg:
+      - m4
+      - libncurses5-dev
+      - libwxgtk3.0-dev
+      - libgl1-mesa-dev
+      - libglu1-mesa-dev
+      - libpng-dev
+      - libssh-dev
+      - unixodbc-dev
+      - xsltproc
+      - fop
+    install_recommends: no
+  become: yes
+  tags: erlang
+
+- name: Install erlang
+  command: "{{ asdf_executable }} install erlang 22.3.3"
+  args:
+    creates: "{{ home }}/.asdf/installs/erlang/22.3.3"
+    chdir: "{{ home }}"
+  tags: erlang

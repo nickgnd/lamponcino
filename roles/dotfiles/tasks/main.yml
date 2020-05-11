@@ -1,0 +1,12 @@
+---
+- name: add .zshrc config
+  copy:
+    src: templates/zshrc
+    dest: ~/.zshrc
+  tags: [ zsh, dotfiles ]
+
+- name: add .vimrc
+  copy:
+    src: templates/vimrc
+    dest: ~/.vimrc
+  tags: [ vim, dotfiles ]
