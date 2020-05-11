@@ -10,6 +10,7 @@
     - shairport-sync
     - hifiberry
     - alsa
+    - raspotify
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"

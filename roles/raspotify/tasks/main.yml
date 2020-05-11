@@ -1,0 +1,10 @@
+# Raspotify
+# https://github.com/dtcooper/raspotify
+---
+- name: install raspotify
+  shell:
+    chdir: "{{ home }}"
+    cmd: curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
+    warn: false
+  tags: raspotify
+
