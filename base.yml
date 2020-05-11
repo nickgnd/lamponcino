@@ -6,14 +6,11 @@
   roles:
     - essentials
     - zsh
-    - asdf
-    - dotfiles
     - motd
     - shairport-sync
     - hifiberry
     - alsa
     - raspotify
-    - erlang
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"
