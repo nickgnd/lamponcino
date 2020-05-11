@@ -20,12 +20,6 @@
   ignore_errors: yes
   tags: shairport-sync
 
-
-- name: Set shairport-sync device name
-  set_fact:
-    shairport_name: "{{ ansible_hostname | title }}"
-    cacheable: yes
-
 - name: Turn off WiFi power management
   become: yes
   shell: iwconfig wlan0 power off
