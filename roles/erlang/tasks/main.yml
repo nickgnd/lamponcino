@@ -13,13 +13,13 @@
   apt:
     name: erlang*
     state: absent
-  tags: [erlang, packages]
+  tags: [erlang, coding, packages]
 
 - name: Add erlang-solutions repository entry
   become: yes
   apt:
     deb: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
-  tags: [erlang, packages]
+  tags: [erlang, coding, packages]
 
 - name: Install erlang-esl
   become: yes
@@ -28,14 +28,15 @@
     update_cache: yes
     name:
       - esl-erlang
-  tags: [erlang, packages]
+  tags: [erlang, coding, packages]
 
 - name: Register erlang version
   shell: "erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().'  -noshell"
   register: erlang_version
-  tags: erlang
+  tags: [erlang, coding]
 
 - name: Print erlang version
   debug:
     var: erlang_version
-  tags: erlang
+    verbosity: 3 # it will only run debug when -vvv or above
+  tags: [erlang, coding]

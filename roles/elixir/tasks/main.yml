@@ -5,14 +5,15 @@
     state: present
     name:
       - elixir
-  tags: [elixir, packages]
+  tags: [elixir, coding, packages]
 
 - name: Register elixir version
   shell: elixir --version
   register: elixir_version
-  tags: elixir
+  tags: [elixir, coding]
 
 - name: Print elixir version
   debug:
     var: elixir_version
-  tags: elixir
+    verbosity: 3 # it will only run debug when -vvv or above
+  tags: [elixir, coding]

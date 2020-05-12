@@ -9,7 +9,7 @@
       - postgresql-contrib
       - libpq-dev
       - python-psycopg2
-  tags: [postgres, packages]
+  tags: [postgres, coding, packages]
 
 - name: Change password for postgres user
   postgresql_user:
@@ -20,14 +20,14 @@
   become: yes
   vars:
     ansible_ssh_pipelining: true
-  tags: postgres
+  tags: [postgres, coding]
 
 - name: Check if postgres is running
   command: "/etc/init.d/postgresql status"
   register: postgres_status
-  tags: postgres
+  tags: [postgres, coding]
 
 - fail:
     msg: "Postgres is not running"
   when: postgres_status.stderr != "" or postgres_status.failed != false
-  tags: postgres
+  tags: [postgres, coding]
