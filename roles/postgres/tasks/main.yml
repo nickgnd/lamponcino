@@ -1,0 +1,33 @@
+---
+- name: Install Postgres and related packages
+  become: yes
+  apt:
+    update_cache: yes
+    state: present
+    pkg:
+      - postgresql
+      - postgresql-contrib
+      - libpq-dev
+      - python-psycopg2
+  tags: postgres
+
+- name: Change password for postgres user
+  postgresql_user:
+    db: postgres
+    user: postgres
+    password: '{{ postgres.postgres_user_password }}'
+  become_user: postgres
+  become: yes
+  vars:
+    ansible_ssh_pipelining: true
+  tags: postgres
+
+- name: Check if postgres is running
+  command: "/etc/init.d/postgresql status"
+  register: postgres_status
+  tags: postgres
+
+- fail:
+    msg: "Postgres is not running"
+  when: postgres_status.stderr != "" or postgres_status.failed != false
+  tags: postgres

@@ -1,0 +1,3 @@
+---
+postgres:
+  postgres_user_password: CHANGE_ME

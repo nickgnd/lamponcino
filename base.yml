@@ -11,6 +11,7 @@
     - hifiberry
     - alsa
     - raspotify
+    - postgres
     - erlang
     - elixir
   vars:
