@@ -9,9 +9,9 @@
   become: yes
   apt:
     state: present
-    pkg:
+    name:
       - alsa-utils
-  tags: alsa
+  tags: [alsa, packages]
 
 - name: Set alsa volume Digital to 90%
   become: yes

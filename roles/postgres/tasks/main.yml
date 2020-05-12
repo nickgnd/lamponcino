@@ -4,12 +4,12 @@
   apt:
     update_cache: yes
     state: present
-    pkg:
+    name:
       - postgresql
       - postgresql-contrib
       - libpq-dev
       - python-psycopg2
-  tags: postgres
+  tags: [postgres, packages]
 
 - name: Change password for postgres user
   postgresql_user:

@@ -2,10 +2,10 @@
 - name: install zsh
   apt:
     state: present
-    pkg:
+    name:
       - zsh
   become: yes
-  tags: zsh
+  tags: [zsh, packages]
 
 - name: set zsh as the default shell
   user:

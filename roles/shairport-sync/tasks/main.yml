@@ -37,7 +37,7 @@
 - name: install shairport-sync dependencies
   apt:
     state: present
-    pkg:
+    name:
       - xmltoman
       - autoconf
       - automake
@@ -50,7 +50,7 @@
       - libssl-dev
       - libsoxr-dev
   become: yes
-  tags: shairport-sync
+  tags: [shairport-sync, packages]
 
 - name: Create /opt/shairport-sync
   become: yes

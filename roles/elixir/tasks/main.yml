@@ -3,9 +3,9 @@
   become: yes
   apt:
     state: present
-    pkg:
+    name:
       - elixir
-  tags: elixir
+  tags: [elixir, packages]
 
 - name: Register elixir version
   shell: elixir --version
