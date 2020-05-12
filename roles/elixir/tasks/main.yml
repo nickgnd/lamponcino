@@ -1,0 +1,18 @@
+---
+- name: Install elixir
+  become: yes
+  apt:
+    state: present
+    pkg:
+      - elixir
+  tags: elixir
+
+- name: Register elixir version
+  shell: elixir --version
+  register: elixir_version
+  tags: elixir
+
+- name: Print elixir version
+  debug:
+    var: elixir_version
+  tags: elixir

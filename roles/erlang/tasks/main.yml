@@ -1,0 +1,41 @@
+# Install erlang on Raspbian based on the official guide
+# https://www.erlang-solutions.com/resources/download.html
+#
+# Note:
+# The installed package is the `esl-erlang` one because it was not possible to install the
+# `erlang` package due to unmet dependencies.
+# The "esl-erlang" package is a file containing the complete installation:
+# it includes the Erlang/OTP platform and all of its applications.
+
+---
+- name: Remove previous installed erlang packages
+  become: yes
+  apt:
+    name: erlang*
+    state: absent
+  tags: erlang
+
+- name: Add erlang-solutions repository entry
+  become: yes
+  apt:
+    deb: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+  tags: erlang
+
+- name: Install erlang-esl
+  become: yes
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - esl-erlang
+  tags: erlang
+
+- name: Register erlang version
+  shell: "erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().'  -noshell"
+  register: erlang_version
+  tags: erlang
+
+- name: Print erlang version
+  debug:
+    var: erlang_version
+  tags: erlang
