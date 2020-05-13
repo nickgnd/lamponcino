@@ -1,22 +1,57 @@
-# The file patch is based on this official guide
+# The changes of the /boot/config.txt file are based on these guides
 # https://www.hifiberry.com/docs/software/configuring-linux-3-18-x/
+# https://www.hifiberry.com/docs/projects/using-the-hifiberry-dac-and-jmpx-for-fm-music-transmissions/
 # http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
 # https://pimylifeup.com/raspberry-pi-airplay-receiver/
 ---
-- name: update boot config
-  patch:
-    src: boot-config.patch
-    dest: /boot/config.txt
-    backup: yes
+- name: Create a backup file of /boot/config.txt
   become: yes
-  register: hifiberry_boot_config
+  copy:
+    src: /boot/config.txt
+    dest: /boot/config.txt.original
+    remote_src: yes
+    force: no # Don't copy the file if it already exists
+  register: state
+  tags: hifiberry
+
+- name: Inform that a backup file has been created
+  become: yes
+  debug:
+    msg: "The backup of the original /boot/config.txt has been created."
+  when: state.changed
+  tags: hifiberry
+
+- name: Disable on-board audio
+  become: yes
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^dtparam=audio=on$'
+    line: '#dtparam=audio=on'
+    state: present
+  register: hifiberry_boot_config_1
+  tags: hifiberry
+
+- name: Insert HiFiBerry configurations
+  become: yes
+  blockinfile:
+    path: /boot/config.txt
+    marker: "\n# {mark} ANSIBLE MANAGED BLOCK - HIFIBERRY\n"
+    block: |
+      # Enable mmap support in the bcm2708-i2s driver
+      dtoverlay=i2s-mmap
+      
+      # Enable HiFiBerry module
+      dtoverlay=hifiberry-dacplus
+      
+      # Enable the improved RaspberryPi audio out
+      # http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
+      audio_pwm_mode=2
+  register: hifiberry_boot_config_2
   tags: hifiberry
 
 - name: restart raspberry if boot config have been changed
   include_role:
     name: common
     tasks_from: reboot
-  when: hifiberry_boot_config.changed
+  when: hifiberry_boot_config_1.changed or hifiberry_boot_config_2.changed
   tags: hifiberry
-
-
