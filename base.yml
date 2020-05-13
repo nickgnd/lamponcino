@@ -9,6 +9,7 @@
     - motd
     - shairport-sync
     - hifiberry
+    - waveshare-5inch-touchscreen
     - alsa
     - raspotify
     - postgres

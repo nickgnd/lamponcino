@@ -1,0 +1,10 @@
+# Small utility to insert a new line before a marker
+# http://mrtango.planetcrazy.de/ansible-add-an-empty-line-before-a-blockinfile.html
+# https://stackoverflow.com/questions/41284602/blockinfile-keeps-adding-the-block
+---
+- name: Insert a new line before the marker line
+  become: true
+  replace:
+    path: "{{ path }}"
+    regexp: "(?<=.\n){{ marker }}"
+    replace: "\n{{ marker }}"

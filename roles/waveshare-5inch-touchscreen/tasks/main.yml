@@ -1,0 +1,48 @@
+# The changes of the /boot/config.txt file are based on the official guide
+# https://www.waveshare.com/wiki/5inch_HDMI_LCD_(H)
+---
+- name: Create a backup file of /boot/config.txt if necessary
+  include_role:
+    name: common
+    tasks_from: backup_boot_config
+  tags: waveshare-5inch-touchscreen
+
+- name: Disable DRM VC4 V3D driver
+  become: yes
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^dtoverlay=vc4-fkms-v3d$'
+    line: '#dtoverlay=vc4-fkms-v3d'
+    state: present
+  register: waveshare_boot_config_1
+  tags: waveshare-5inch-touchscreen
+
+- name: Insert Waveshare 5inch touchscreen configurations
+  become: yes
+  blockinfile:
+    path: /boot/config.txt
+    marker: "### {mark} ANSIBLE MANAGED BLOCK - WAVESHARE ###"
+    block: |
+      # Config Waveshare 5inch HDMI LCD (H)
+      max_usb_current=1
+      hdmi_group=2
+      hdmi_mode=87
+      hdmi_cvt 800 480 60 6 0 0 0
+  register: waveshare_boot_config_2
+  tags: waveshare-5inch-touchscreen
+
+- name: Insert an empty line before the marker line
+  include_role:
+    name: common
+    tasks_from: blockinfile_prepend_new_line
+  vars:
+    path: /boot/config.txt
+    marker: "### BEGIN ANSIBLE MANAGED BLOCK - WAVESHARE ###"
+  tags: waveshare-5inch-touchscreen
+
+- name: Restart raspberry if boot config have been changed
+  include_role:
+    name: common
+    tasks_from: reboot
+  when: waveshare_boot_config_1.changed or waveshare_boot_config_2.changed
+  tags: waveshare-5inch-touchscreen

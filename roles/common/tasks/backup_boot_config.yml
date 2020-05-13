@@ -1,0 +1,19 @@
+# Unfortunately it is not possible to use the `backup` argument
+# in the boot folder, somehow it does not like filenames with timestamps.
+---
+- name: Create a backup file of /boot/config.txt
+  become: yes
+  copy:
+    src: /boot/config.txt
+    dest: /boot/config.txt.original
+    remote_src: yes
+    force: no # Don't copy the file if it already exists
+  register: state
+  tags: boot-config
+
+- name: Inform that a backup file has been created
+  become: yes
+  debug:
+    msg: "The backup of the original /boot/config.txt has been created."
+  when: state.changed
+  tags: boot-config

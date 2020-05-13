@@ -4,21 +4,10 @@
 # http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
 # https://pimylifeup.com/raspberry-pi-airplay-receiver/
 ---
-- name: Create a backup file of /boot/config.txt
-  become: yes
-  copy:
-    src: /boot/config.txt
-    dest: /boot/config.txt.original
-    remote_src: yes
-    force: no # Don't copy the file if it already exists
-  register: state
-  tags: hifiberry
-
-- name: Inform that a backup file has been created
-  become: yes
-  debug:
-    msg: "The backup of the original /boot/config.txt has been created."
-  when: state.changed
+- name: Create a backup file of /boot/config.txt if necessary
+  include_role:
+    name: common
+    tasks_from: backup_boot_config
   tags: hifiberry
 
 - name: Disable on-board audio
@@ -35,7 +24,7 @@
   become: yes
   blockinfile:
     path: /boot/config.txt
-    marker: "\n# {mark} ANSIBLE MANAGED BLOCK - HIFIBERRY\n"
+    marker: "### {mark} ANSIBLE MANAGED BLOCK - HIFIBERRY ###"
     block: |
       # Enable mmap support in the bcm2708-i2s driver
       dtoverlay=i2s-mmap
@@ -49,7 +38,16 @@
   register: hifiberry_boot_config_2
   tags: hifiberry
 
-- name: restart raspberry if boot config have been changed
+- name: Insert an empty line before the marker line
+  include_role:
+    name: common
+    tasks_from: blockinfile_prepend_new_line
+  vars:
+    path: /boot/config.txt
+    marker: "### BEGIN ANSIBLE MANAGED BLOCK - HIFIBERRY ###"
+  tags: hifiberry
+
+- name: Restart raspberry if boot config have been changed
   include_role:
     name: common
     tasks_from: reboot
