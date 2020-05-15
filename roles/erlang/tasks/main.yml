@@ -8,12 +8,12 @@
 # it includes the Erlang/OTP platform and all of its applications.
 
 ---
-- name: Remove previous installed erlang packages
-  become: yes
-  apt:
-    name: erlang*
-    state: absent
-  tags: [erlang, coding, packages]
+# - name: Remove previous installed erlang packages
+#   become: yes
+#   apt:
+#     name: erlang*
+#     state: absent
+#   tags: [erlang, coding, packages]
 
 - name: Add erlang-solutions repository entry
   become: yes
