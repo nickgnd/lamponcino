@@ -1,3 +1,5 @@
+# NOTE:
+# The `motd.sh` is faulty and it breaks the user's profile (`etc/zsh/profile`) blocking the autologin.
 ---
 - name: update static motd file
   copy:
