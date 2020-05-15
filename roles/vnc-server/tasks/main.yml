@@ -1,0 +1,56 @@
+# Enable VNC Server
+#
+# https://www.raspberrypi.org/documentation/remote-access/vnc/
+# https://www.raspberrypi.org/documentation/configuration/raspi-config.md
+# https://help.realvnc.com/hc/en-us/articles/360002310857-vncserver-x11-serviced-Man-Page#user-interface-0-8
+# https://www.raspberrypi.org/forums/viewtopic.php?t=197112
+#
+---
+- name: Create a symbolic link for the VNC server service
+  become: yes
+  file:
+    force: no
+    src: /usr/lib/systemd/system/vncserver-x11-serviced.service
+    path: /etc/systemd/system/multi-user.target.wants/vncserver-x11-serviced.service
+    state: link
+  tags: vnc-server
+
+- name: ensure X11 VNC server is running and starts on boot
+  become: yes
+  systemd:
+    name: vncserver-x11-serviced
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags: vnc-server
+
+# Apparently this step is needed otherwise the VNC Server does not work
+#
+# From the docs:
+# Setting hdmi_force_hotplug to 1 pretends that the HDMI hotplug signal is asserted,
+# so it appears that a HDMI display is attached.
+# In other words, HDMI output mode will be used, even if no HDMI monitor is detected.
+#
+# https://www.raspberrypi.org/documentation/configuration/config-txt/video.md
+- name: Create a backup file of /boot/config.txt if necessary
+  include_role:
+    name: common
+    tasks_from: backup_boot_config
+  tags: vnc-server
+
+- name: Force hotplug
+  become: yes
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^#hdmi_force_hotplug=1$'
+    line: 'hdmi_force_hotplug=1'
+    state: present
+  register: vnc_boot_config
+  tags: vnc-server
+
+- name: Restart raspberry if boot config have been changed
+  include_role:
+    name: common
+    tasks_from: reboot
+  when: vnc_boot_config.changed
+  tags: vnc-server

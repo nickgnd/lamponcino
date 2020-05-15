@@ -8,6 +8,7 @@
     - zsh
     # - motd # <- Disable it since it is faulty and blocks the autologin
     - shairport-sync
+    - vnc-server
     - hifiberry
     - waveshare-5inch-touchscreen
     - alsa
