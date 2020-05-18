@@ -1,5 +1,15 @@
-# The changes of the /boot/config.txt file are based on the official guide
+# The changes of the /boot/config.txt file are based on the official guides
 # https://www.waveshare.com/wiki/5inch_HDMI_LCD_(H)
+# https://www.raspberrypi.org/documentation/configuration/config-txt/video.md
+#
+# IMPORTANT:
+# The screen works only when plugged using the `hdmi:0` (the one nearest the USB-C power socket)
+# Probably due to a bug in the current firmware:
+# - https://github.com/raspberrypi/firmware/issues/1159
+# - https://www.raspberrypi.org/forums/viewtopic.php?t=246963
+# - https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=243886
+# - https://www.raspberrypi.org/forums/viewtopic.php?t=246817
+#
 ---
 - name: Create a backup file of /boot/config.txt if necessary
   include_role:
