@@ -1,10 +1,19 @@
 # Raspotify
 # https://github.com/dtcooper/raspotify
 ---
-- name: install raspotify
+- name: Install raspotify
+  become: yes
   shell:
     chdir: "{{ home }}"
     cmd: curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
     warn: false
   tags: raspotify
 
+- name: Update bitrate
+  become: yes
+  lineinfile:
+    path: /etc/default/raspotify
+    regexp: '^#BITRATE="160"$'
+    line: 'BITRATE="320"'
+    state: present
+  tags: raspotify
