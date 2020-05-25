@@ -1,0 +1,52 @@
+---
+- name: Install https transport for apt
+  apt:
+    state: present
+    name:
+      - apt-transport-https
+  become: yes
+  tags: [nodejs, coding]
+
+- name: add nodesource key
+  apt_key:
+    state: present
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+  become: yes
+  tags: [nodejs, coding]
+
+- name: Get OS distribution info
+  command: lsb_release -sc
+  register: os_info
+
+- name: add nodesource repos
+  apt_repository:
+    state: present
+    repo: "{{ item }}"
+    filename: "nodesource"
+    mode: "0644"
+  with_items:
+    - "deb https://deb.nodesource.com/node_12.x {{ os_info.stdout }} main"
+    - "deb-src https://deb.nodesource.com/node_12.x {{ os_info.stdout }} main"
+  become: yes
+  tags: [nodejs, coding]
+
+- name: install node
+  apt:
+    state: present
+    name:
+      - nodejs
+  become: yes
+  tags: [nodejs, coding]
+
+- name: Register nodejs version
+  shell: nodejs --version
+  register: nodejs_version
+  tags: [nodejs, coding]
+
+- name: Print nodejs version
+  debug:
+    var: nodejs_version
+    verbosity: 3 # it will only run debug when -vvv or above
+  tags: [nodejs, coding]
+
+
