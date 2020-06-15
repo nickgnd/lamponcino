@@ -1,0 +1,10 @@
+---
+- name: Copy "lamponcino" ssh key pair, needed to clone private repos.
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0600'
+  with_items:
+    - { src: '~/.ssh/{{ ssh_keys.name }}', dest: '~/.ssh/{{ ssh_keys.name }}' }
+    - { src: '~/.ssh/{{ ssh_keys.name }}.pub', dest: '~/.ssh/{{ ssh_keys.name }}.pub' }
+  tags: [ssh-keys]

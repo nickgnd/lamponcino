@@ -1,3 +1,6 @@
 ---
 postgres:
   postgres_user_password: CHANGE_ME
+
+ssh_keys:
+  name: CHANGE_ME
