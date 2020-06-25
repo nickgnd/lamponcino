@@ -1,0 +1,17 @@
+---
+- name: install nginx
+  apt:
+    state: present
+    name:
+      - nginx
+  become: yes
+  tags: [nginx, packages]
+
+- name: restart nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+  tags: [nginx]

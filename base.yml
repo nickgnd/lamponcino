@@ -12,6 +12,7 @@
     - hifiberry
     - waveshare-5inch-touchscreen
     - alsa
+    - nginx
     - raspotify
     - postgres
     - erlang
