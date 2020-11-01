@@ -5,14 +5,14 @@
     name:
       - apt-transport-https
   become: yes
-  tags: [nodejs, coding]
+  tags: [nodejs, coding, packages]
 
 - name: add nodesource key
   apt_key:
     state: present
     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
   become: yes
-  tags: [nodejs, coding]
+  tags: [nodejs, coding, packages]
 
 - name: Get OS distribution info
   command: lsb_release -sc
@@ -28,7 +28,7 @@
     - "deb https://deb.nodesource.com/node_12.x {{ os_info.stdout }} main"
     - "deb-src https://deb.nodesource.com/node_12.x {{ os_info.stdout }} main"
   become: yes
-  tags: [nodejs, coding]
+  tags: [nodejs, coding, packages]
 
 - name: install node
   apt:
@@ -36,7 +36,7 @@
     name:
       - nodejs
   become: yes
-  tags: [nodejs, coding]
+  tags: [nodejs, coding, packages]
 
 - name: Register nodejs version
   shell: nodejs --version
