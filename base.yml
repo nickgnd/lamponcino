@@ -7,6 +7,7 @@
     - essentials
     - zsh
     # - motd # <- Disable it since it is faulty and blocks the autologin
+    - windowing
     - shairport-sync
     - vnc-server
     - hifiberry

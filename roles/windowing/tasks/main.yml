@@ -1,0 +1,11 @@
+---
+- name: Install X Window system and Openbox window manager
+  apt:
+    state: present
+    pkg:
+      - openbox
+      - x11-xserver-utils
+      - xinit
+      - xserver-xorg
+  become: yes
+  tags: [windowing, packages]

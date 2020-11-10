@@ -1,0 +1,8 @@
+---
+- name: install chromium
+  apt:
+    state: present
+    name:
+      - chromium-browser
+  become: yes
+  tags: [chromium, packages]
