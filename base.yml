@@ -4,23 +4,23 @@
 
 - hosts: raspberries
   roles:
-    - essentials
-    - zsh
+    # - essentials
+    # - zsh
     # - motd # <- Disable it since it is faulty and blocks the autologin
     - windowing
-    - shairport-sync
-    - vnc-server
-    - hifiberry
-    - waveshare-5inch-touchscreen
-    - alsa
-    - nginx
-    - raspotify
-    - postgres
-    - erlang
-    - elixir
-    - nodejs
-    - ssh-keys
-    - chromium
+    # - shairport-sync
+    # - vnc-server
+    # - hifiberry
+    # - waveshare-5inch-touchscreen
+    # - alsa
+    # - nginx
+    # - raspotify
+    # - postgres
+    # - erlang
+    # - elixir
+    # - nodejs
+    # - ssh-keys
+    # - chromium
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"
