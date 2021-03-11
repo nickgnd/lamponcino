@@ -4,11 +4,11 @@
 
 - hosts: raspberries
   roles:
-    - essentials
-    - zsh
-    - ssh-keys
-    - chromium
-    # - vnc-server
+    - nginx
+    - postgres
+    - erlang
+    - elixir
+    - nodejs
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"

@@ -4,11 +4,10 @@
 
 - hosts: raspberries
   roles:
-    - essentials
-    - zsh
-    - ssh-keys
-    - chromium
-    # - vnc-server
+    - hifiberry
+    - alsa
+    - shairport-sync
+    - raspotify
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"

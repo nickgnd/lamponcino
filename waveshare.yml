@@ -4,11 +4,7 @@
 
 - hosts: raspberries
   roles:
-    - essentials
-    - zsh
-    - ssh-keys
-    - chromium
-    # - vnc-server
+    - waveshare-5inch-touchscreen
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"
