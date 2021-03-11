@@ -4,7 +4,7 @@
 
 - hosts: raspberries
   roles:
-    - windowing
+    - login-dashboard
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"

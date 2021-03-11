@@ -10,5 +10,5 @@ cd "$(dirname "$0")/.."
 
 exec ansible-playbook \
   --inventory=raspberries \
-  windowing.yml \
+  login-dashboard.yml \
   "$@"
