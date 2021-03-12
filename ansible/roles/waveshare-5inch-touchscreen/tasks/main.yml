@@ -1,3 +1,5 @@
+# UPDATE: Not needed anymore with the new OS version (buster 10)
+#
 # The changes of the /boot/config.txt file are based on the official guides
 # https://www.waveshare.com/wiki/5inch_HDMI_LCD_(H)
 # https://www.raspberrypi.org/documentation/configuration/config-txt/video.md

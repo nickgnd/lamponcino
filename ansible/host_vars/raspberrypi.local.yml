@@ -1,0 +1,6 @@
+---
+postgres:
+  postgres_user_password: lamponebiancorosso
+
+ssh_keys:
+  name: lamponcino_rsa
