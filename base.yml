@@ -8,7 +8,6 @@
     - zsh
     - ssh-keys
     - chromium
-    # - vnc-server
   vars:
     home: "{{ ansible_env.HOME }}"
     user: "{{ ansible_env.USER }}"

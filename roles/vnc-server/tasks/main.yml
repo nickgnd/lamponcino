@@ -1,10 +1,21 @@
 # Enable VNC Server
 #
 # https://www.raspberrypi.org/documentation/remote-access/vnc/
+# https://www.raspberrypi.org/documentation/configuration/config-txt/video.md
 # https://www.raspberrypi.org/documentation/configuration/raspi-config.md
 # https://help.realvnc.com/hc/en-us/articles/360002310857-vncserver-x11-serviced-Man-Page#user-interface-0-8
 # https://www.raspberrypi.org/forums/viewtopic.php?t=197112
 #
+#
+# Troubleshooting VNC Server:
+#
+# - Force hotplug
+# - Change resolution
+# - check .xsession-errors and the profile
+#
+# https://help.realvnc.com/hc/en-us/articles/360002249917-VNC-Connect-and-Raspberry-Pi#troubleshooting-vnc-server-0-7
+# https://www.raspberrypi.org/forums/viewtopic.php?t=216737
+
 ---
 - name: Create a symbolic link for the VNC server service
   become: yes
@@ -24,6 +35,8 @@
     daemon_reload: yes
   tags: vnc-server
 
+# UPDATE: Not needed anymore with the new OS version (buster 10)
+#
 # Apparently this step is needed otherwise the VNC Server does not work
 #
 # From the docs:
@@ -32,21 +45,21 @@
 # In other words, HDMI output mode will be used, even if no HDMI monitor is detected.
 #
 # https://www.raspberrypi.org/documentation/configuration/config-txt/video.md
-- name: Create a backup file of /boot/config.txt if necessary
-  include_role:
-    name: common
-    tasks_from: backup_boot_config
-  tags: vnc-server
+# - name: Create a backup file of /boot/config.txt if necessary
+#   include_role:
+#     name: common
+#     tasks_from: backup_boot_config
+#   tags: vnc-server
 
-- name: Force hotplug
-  become: yes
-  lineinfile:
-    path: /boot/config.txt
-    regexp: '^#hdmi_force_hotplug=1$'
-    line: 'hdmi_force_hotplug=1'
-    state: present
-  register: vnc_boot_config
-  tags: vnc-server
+# - name: Force hotplug
+#   become: yes
+#   lineinfile:
+#     path: /boot/config.txt
+#     regexp: '^#hdmi_force_hotplug=1$'
+#     line: 'hdmi_force_hotplug=1'
+#     state: present
+#   register: vnc_boot_config
+#   tags: vnc-server
 
 - name: Restart raspberry if boot config have been changed
   include_role:
