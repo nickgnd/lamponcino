@@ -8,7 +8,8 @@ Environment=DISPLAY=:0.0
 Environment=XAUTHORITY={{ home }}/.Xauthority
 Type=simple
 ExecStart={{ home }}/login-dashboard.sh
-Restart=on-abort
+Restart=on-failure
+RestartSec=10s
 WorkingDirectory={{ home }}
 User={{ user }}
 
